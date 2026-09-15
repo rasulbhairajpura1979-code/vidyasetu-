@@ -1671,22 +1671,32 @@
   <script>
     // ===== BILINGUAL DATE TO WORDS GENERATORS =====
     function convertDateToGujaratiWords(dateStr) {
-      if (!dateStr) return '';
-      var clean = dateStr.trim().replace(/\//g, '-');
-      var parts = clean.split('-');
-      var d = 0, m = 0, y = 0;
-      if (parts[0].length === 4) { y = parseInt(parts[0]); m = parseInt(parts[1]); d = parseInt(parts[2]); }
-      else { d = parseInt(parts[0]); m = parseInt(parts[1]); y = parseInt(parts[2]); }
-      if (isNaN(d) || isNaN(m) || isNaN(y)) return '';
+    if (!dateStr) return "";
+    var clean = dateStr.trim().replace(/\//g, '-');
+    var parts = clean.split('-');
+    var d = 0, m = 0, y = 0;
 
-      const daysGuj = ["", "પહેલી", "બીજી", "ત્રીજી", "ચોથી", "પાંચમી", "છઠ્ઠી", "સાતમી", "આઠમી", "નવમી", "દસમી", 
-                       "અગિયારમી", "બારમી", "તેરમી", "ચૌદમી", "પંદરમી", "સોળમી", "સત્તરમી", "અઢારમી", "ઓગણીસમી", "વીસમી", 
-                       "એકવીસમી", "બાવીસમી", "તેવીસમી", "ચોવીસમી", "પચીસમી", "છવ્વીસમી", "સત્તાવીસમી", "અઠ્ઠાવીસમી", "ઓગણત્રીસમી", "ત્રીસમી", "એકત્રીસમી"];
+    if (parts.length === 3) {
+        if (parts[0].length === 4) {
+            y = parseInt(parts[0], 10);
+            m = parseInt(parts[1], 10);
+            d = parseInt(parts[2], 10);
+        } else {
+            d = parseInt(parts[0], 10);
+            m = parseInt(parts[1], 10);
+            y = parseInt(parts[2], 10);
+        }
+    }
+    if (isNaN(d) || isNaN(m) || isNaN(y) || d === 0 || m === 0 || y === 0) return "";
 
-      const monthsGuj = ["", "જાન્યુઆરી", "ફેબ્રુઆરી", "માર્ચ", "એપ્રિલ", "મે", "જૂન", 
-                         "જુલાઈ", "ઓગસ્ટ", "સપ્ટેમ્બર", "ઓક્ટોબર", "નવેમ્બર", "ડિસેમ્બર"];
+    const daysGuj = ["", "પહેલી", "બીજી", "ત્રીજી", "ચોથી", "પાંચમી", "છઠ્ઠી", "સાતમી", "આઠમી", "નવમી", "દસમી",
+        "અગિયારમી", "બારમી", "તેરમી", "ચૌદમી", "પંદરમી", "સોળમી", "સત્તરમી", "અઢારમી", "ઓગણીસમી", "વીસમી",
+        "એકવીસમી", "બાવીસમી", "તેવીસમી", "ચોવીસમી", "પચીસમી", "છવ્વીસમી", "સત્તાવીસમી", "અઠ્ઠાવીસમી", "ઓગણત્રીસમી", "ત્રીસમી", "એકત્રીસમી"];
 
-      const units = [
+    const monthsGuj = ["", "જાન્યુઆરી", "ફેબ્રુઆરી", "માર્ચ", "એપ્રિલ", "મે", "જૂન",
+        "જુલાઈ", "ઓગસ્ટ", "સપ્ટેમ્બર", "ઓક્ટોબર", "નવેમ્બર", "ડિસેમ્બર"];
+
+    const units = [
         "શૂન્ય", "એક", "બે", "ત્રણ", "ચાર", "પાંચ", "છ", "સાત", "આઠ", "નવ", "દસ",
         "અગિયાર", "બાર", "તેર", "ચૌદ", "પંદર", "સોળ", "સત્તર", "અઢાર", "ઓગણીસ", "વીસ",
         "એકવીસ", "બાવીસ", "તેવીસ", "ચોવીસ", "પચીસ", "છવ્વીસ", "સત્તાવીસ", "અઠ્ઠાવીસ", "ઓગણત્રીસ", "ત્રીસ",
@@ -1709,6 +1719,12 @@
     } else {
         yearWord = String(y);
     }
+
+    let dayText = daysGuj[d] || String(d);
+    let monthText = monthsGuj[m] || String(m);
+
+    return (dayText + " " + monthText + " " + yearWord).trim();
+}
 
     function convertDateToEnglishWords(dateStr) {
       if (!dateStr) return '';
@@ -1754,9 +1770,7 @@
    function onDobInputChange() {
     const el = document.getElementById('new-dob');
     if (!el) return;
-    let val = el.value.trim();
-    // સ્લેશ (/) કે ડેશ (-) બંનેને એકસમાન ડેશમાં ફેરવી દેશે
-    val = val.replace(/\//g, '-');
+    let val = el.value.trim().replace(/\//g, '-');
     if (val && val.length >= 8) {
         const wordsEl = document.getElementById('new-dob-words');
         if (wordsEl) {
