@@ -886,7 +886,7 @@
           </div>
 
           <div style="margin-top:10px; display:flex; gap:6px;">
-            <button class="btn btn-primary" style="flex:1;" onclick="window.print()">🖨️ A4 દ્વિભાષી L.C. પ્રિન્ટ કરો</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="triggerPrint()">🖨️ A4 દ્વિભાષી L.C. પ્રિન્ટ કરો</button>
             <button class="btn btn-danger" style="flex:1;" onclick="finalizeStudentLeaving()">🔒 વિદ્યાર્થીને 'કમી (Left)' કરો</button>
           </div>
         </div>
@@ -3390,7 +3390,12 @@
       persistState('saveTpl', {});
       showToast('✅ ટેમ્પલેટ સેવ થયું!');
     }
-
+function triggerPrint() {
+    if (window.AndroidPrint && window.AndroidPrint.printPage) {
+        window.AndroidPrint.printPage();
+    } else {
+        window.print();
+    }
     window.onload = init;
   </script>
 </body>
