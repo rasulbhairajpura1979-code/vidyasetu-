@@ -1745,12 +1745,19 @@
       return html;
     }
 
-    function onDobInputChange() {
-      const val = document.getElementById('new-dob').value;
-      if (val && val.length >= 8) {
-        document.getElementById('new-dob-words').value = convertDateToGujaratiWords(val);
-      }
+   function onDobInputChange() {
+    const el = document.getElementById('new-dob');
+    if (!el) return;
+    let val = el.value.trim();
+    // સ્લેશ (/) કે ડેશ (-) બંનેને એકસમાન ડેશમાં ફેરવી દેશે
+    val = val.replace(/\//g, '-');
+    if (val && val.length >= 8) {
+        const wordsEl = document.getElementById('new-dob-words');
+        if (wordsEl) {
+            wordsEl.value = convertDateToGujaratiWords(val);
+        }
     }
+}
 
     function toISODate(ddmmyyyy) {
       if (!ddmmyyyy) return '';
